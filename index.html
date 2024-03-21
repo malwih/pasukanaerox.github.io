@@ -1,0 +1,119 @@
+<html>
+<meta charset='UTF-8'/><meta content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5' name='viewport'/><meta content='IE=edge' http-equiv='X-UA-Compatible'/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script><link href="style.css" rel="stylesheet" type="text/css" /><script src="script.js"></script>
+<title>PASUKAN AEROX | MEMBER</title>
+<head>
+<link href='https://i.postimg.cc/y8Y4sfdT/Logo-Pasukan-Aerox.pnghttps://i.postimg.cc/y8Y4sfdT/Logo-Pasukan-Aerox.png' rel='SHORTCUT ICON'/>
+</head>
+<body>
+<!-- Wallpaper --><style>body{background: linear-gradient(-45deg, #AD563C, #A92C5C, #1B81A5, #19987B);background-size: 400% 400%;animation: gradient 15s ease infinite;} @keyframes gradient {0% {background-position: 0% 50%;}50% {background-position: 100% 50%;}100% {background-position: 0% 50%;}}</style>
+<div id="foto" class="foto" style="display:none">
+<div class="image">
+<!-- Foto Kamu --><img id="ftKm" src="https://i.postimg.cc/y8Y4sfdT/Logo-Pasukan-Aerox.png" width="100px" height="100px"/>
+<!-- Foto Aku --><img id="ftAk" style="opacity:0;position:absolute;" src="https://i.postimg.cc/287kW7bc/Png-Item-1689599.png" width="100px" height="100px"/></div>
+<span id="sp1"><b id="namamu"></b><div id="lope" style="display:inline-block;align-items:center;justify-content:center;">&#10084;&#65039;</div></span>
+<div id="sp2" style="display:none;"><span id="text5"></span></div>
+</div>
+
+<div id='Content' style="display:none"><div id='koteks' class="kolomteks"><p id="text"></p><p id="text2"></p><p id="text3"></p><p id="text4" style="font-weight:700;font-size: 12px"></p></div><div id="trm" class="contTom"><a style="margin:12px 12px 12px 12px;" class='button' onClick="finish();"></i>Lanjut</a></div><div id="whs" class="contTom"><a class='button whatsapp' onClick='bukaWa();'><i class='icon whatsapp'></i>Join Sekarang</a></div></div>
+
+<!-- Teks Mengetik dan WhatsApp --><script>
+  var a=0,text;
+  text = "Sambutan yang sangat hangat untuk Anda! Sangat menyenangkan kehadiran Anda di antara kami!...   "
+  var i=0,text2;
+  text2 = "Kami sangat senang menyambut Anda di rumah baru kami.      "                   
+  var u=0,text3;
+  text3 = "Selamat datang ya! Kami merasa terhormat untuk menerima Anda.         "
+  var e=0,text4;
+  var o=0,text5;
+  text5 = "Keep Solid, "
+
+//Opsi WhatsApp
+ function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "Nama Lengkap: " + nama + "%0A" + "Alamat Lengkap: " + alamat + ", " + kab + "%0A" + "Usia: " + persen + " Tahun" + "%0A" + "No.WA: " + nowa + "%0A" + "Akun IG: " + "http://instagram.com/" + akunig + "%0A%0A" + "*" + "KEMUDIAN KIRIM FOTO MOTOR AEROXNYA BERSAMA OWNERNYA!!" + "*"   + "%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
+</script>
+ 
+<script type="text/javascript">
+            var author = 'Pasukan Aerox';
+            var today = new Date();var date = today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear()+'.';var dateTime = date;
+            const swals = Swal.mixin({
+                cancelButtonColor: '#909090',
+                confirmButtonColor: '#00B487',
+                allowOutsideClick: false,
+            });
+            async function mulai(){
+                var { value: nama } = await swals.fire({
+                    title: 'Nama lengkap kamu?',
+                    input: 'text',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: false,
+                });
+                if(nama){
+                	window.nama = nama;                    
+                    text5 = text5 + window.nama + "!";  
+
+                var { value: alamat } = await swals.fire({
+                    title: 'Alamat domisili sekarang?',
+                    input: 'text',
+                    inputLabel: '(Desa, RT/RW, Kelurahan, Kecamatan)',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: false,
+                });
+                window.alamat = alamat;
+
+                var { value: kab } = await swals.fire({
+                    title: 'Kota/Kabupaten mana?',
+                    input: 'text',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: false,
+                });
+                window.kab = kab;
+
+                  var { value: nowa } = await swals.fire({
+                    title: 'Nomor whatsapp kamu?',
+                    input: 'number',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: false,
+                });
+                window.nowa = nowa;
+
+                           
+
+                var { value: akunig } = await swals.fire({
+                    title: 'Username instagram kamu?',
+                    input: 'text',
+                    inputLabel: '@',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: false,
+                });
+                window.akunig = akunig;
+   
+                  
+                  var { value: persen } = await swals.fire({
+                            title: nama + ' mau gabung di ' + author + ' kan?',
+                            input: 'range',
+                            inputLabel: 'Umur ' + nama + ' berapa tahun?',
+                            inputAttributes: {
+                                min: 0,
+                                max: 50,
+                            },
+                            inputValue: 20
+                            });                
+                  if(persen){
+                	window.persen = persen ; 
+                   
+                    document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
+                    text4 = "Dari: " + author + ", Untuk: " + nama + ".";
+                    await swals.fire(`Terima Kasih &#128149;`);
+                    ketik();showDiv();showFt();
+                  }
+                } else {
+                    await swals.fire('Tidak boleh kosong, ya!');
+                  mulai();
+                  }
+            }
+//funct Mulai
+mulai()            
+</script>
+</body>
+</html>
