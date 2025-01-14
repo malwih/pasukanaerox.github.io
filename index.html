@@ -86,27 +86,6 @@ const overlay = document.getElementById("overlay-lock");
         // Sembunyikan overlay setelah selesai
         overlay.style.display = "none";
 
-        // Lanjutkan ke bagian input nama
-        let nama;
-        while (!nama) {
-            const { value: inputNama } = await Swal.fire({
-                title: "Nama lengkap kamu?",
-                input: "text",
-                confirmButtonText: "Lanjut",
-                showCancelButton: false,
-                allowOutsideClick: false,
-            });
-
-            if (inputNama && inputNama.trim() !== "") {
-                nama = inputNama;
-            } else {
-                await Swal.fire("Nama tidak boleh kosong, ya!");
-            }
-        }
-
-        window.nama = nama;
-        console.log("Nama pengguna:", nama);
-
         // Lakukan sesuatu setelah nama diterima
         document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
     } else {
