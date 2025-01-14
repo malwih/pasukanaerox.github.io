@@ -30,7 +30,7 @@
   text5 = "Keep Solid, "
 
 //Opsi WhatsApp
- function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "Nama Lengkap: " + nama + "%0A" + "Alamat Lengkap: " + alamat + ", " + kab + "%0A" + "Usia: " + persen + " Tahun" + "%0A" + "No.WA: " + nowa + "%0A" + "Akun IG: " + "http://instagram.com/" + akunig + "%0A%0A" + "*" + "KEMUDIAN KIRIM FOTO MOTOR AEROXNYA BERSAMA OWNERNYA!!" + "*"   + "%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
+ function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "Nama Lengkap: " + nama + "%0A" + "Alamat Lengkap: " + alamat + ", " + kab + "%0A" + "Usia: " + persen + " Tahun" + "%0A" + "No. Plat: " + plat + "%0A" + "No. SIM/STNK: " + sim + "%0A"+ "No.WA: " + nowa + "%0A" + "Akun IG: " + "http://instagram.com/" + akunig + "%0A%0A" + "*" + "KEMUDIAN KIRIM FOTO MOTOR AEROXNYA BERSAMA OWNERNYA!!" + "*"   + "%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
 </script>
  
 <script type="text/javascript">
@@ -69,6 +69,22 @@
                 });
                 window.kab = kab;
 
+                  var { value: plat } = await swals.fire({
+                    title: 'Nomor Plat?',
+                    input: 'text',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: false,
+                });
+                window.kab = kab;
+
+                  var { value: sim } = await swals.fire({
+                    title: 'Nomor SIM/STNK?',
+                    input: 'number',
+                    confirmButtonText: 'Lanjut',
+                    showCancelButton: true,
+                });
+                window.kab = kab;
+
                   var { value: nowa } = await swals.fire({
                     title: 'Nomor whatsapp kamu?',
                     input: 'number',
@@ -94,7 +110,7 @@
                             input: 'range',
                             inputLabel: 'Umur ' + nama + ' berapa tahun?',
                             inputAttributes: {
-                                min: 0,
+                                min: 17,
                                 max: 50,
                             },
                             inputValue: 20
