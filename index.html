@@ -17,6 +17,7 @@
 </div>
 
 <audio id="musikLatar" src="avangard.mp3"></audio>
+<div id="overlay-lock" style="display: none;"></div>
 
 
 <div id='Content' style="display:none"><div id='koteks' class="kolomteks"><p id="text"></p><p id="text2"></p><p id="text3"></p><p id="text4" style="font-weight:700;font-size: 12px"></p></div><div id="trm" class="contTom"><a style="margin:12px 12px 12px 12px;" class='button' onClick="finish();"></i>Setuju!</a></div><div id="whs" class="contTom"><a class='button whatsapp' onClick='bukaWa();'><i class='icon whatsapp'></i>Join Sekarang</a></div></div>
@@ -46,38 +47,68 @@
             });
             async function mulai() {
     
-// Ambil elemen audio
-const audioElement = document.getElementById("musikLatar");
+// Tampilkan overlay untuk mengunci klik
+const overlay = document.getElementById("overlay-lock");
+    overlay.style.display = "block";
 
-// Fungsi untuk memutar musik
-async function putarMusik() {
-    try {
-        await audioElement.play();
-        console.log("Musik berhasil diputar.");
-    } catch (err) {
-        console.error("Gagal memutar musik:", err);
-        await Swal.fire({
-            icon: "error",
-            title: "Musik tidak dapat diputar",
-            text: "Pastikan browser mengizinkan pemutaran audio!",
-        });
+    // Ambil elemen audio
+    const audioElement = document.getElementById("musikLatar");
+
+    // Fungsi untuk memutar musik
+    async function putarMusik() {
+        try {
+            await audioElement.play();
+            console.log("Musik berhasil diputar.");
+        } catch (err) {
+            console.error("Gagal memutar musik:", err);
+            await Swal.fire({
+                icon: "error",
+                title: "Musik tidak dapat diputar",
+                text: "Pastikan browser mengizinkan pemutaran audio!",
+            });
+        }
     }
-}
 
-// Tampilkan notifikasi "Siap bergabung di Pasukan Aerox?"
-const { isConfirmed } = await Swal.fire({
-    title: "Siap bergabung di Pasukan Aerox?",
-    confirmButtonText: "Siap",
-    showCancelButton: true,
-    cancelButtonText: "Tidak",
-});
+    // Tampilkan notifikasi "Siap bergabung di Pasukan Aerox?"
+    const { isConfirmed } = await Swal.fire({
+        title: "Siap bergabung di Pasukan Aerox?",
+        text: "Klik 'Siap!' untuk memulai perjalanan Anda.",
+        confirmButtonText: "Siap!",
+        allowOutsideClick: false, // Nonaktifkan klik di luar modal
+        allowEscapeKey: false,   // Nonaktifkan tombol escape
+        allowEnterKey: true,     // Izinkan tombol enter
+    });
 
-if (isConfirmed) {
-    // Mulai memutar musik setelah klik "Siap!"
-    await putarMusik();
+    if (isConfirmed) {
+        // Mulai memutar musik setelah klik "Siap!"
+        await putarMusik();
 
-// Lakukan sesuatu setelah nama diterima
-document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
+        // Sembunyikan overlay setelah selesai
+        overlay.style.display = "none";
+
+        // Lanjutkan ke bagian input nama
+        let nama;
+        while (!nama) {
+            const { value: inputNama } = await Swal.fire({
+                title: "Nama lengkap kamu?",
+                input: "text",
+                confirmButtonText: "Lanjut",
+                showCancelButton: false,
+                allowOutsideClick: false,
+            });
+
+            if (inputNama && inputNama.trim() !== "") {
+                nama = inputNama;
+            } else {
+                await Swal.fire("Nama tidak boleh kosong, ya!");
+            }
+        }
+
+        window.nama = nama;
+        console.log("Nama pengguna:", nama);
+
+        // Lakukan sesuatu setelah nama diterima
+        document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
     } else {
         // Jika pengguna klik "Batal", coba tutup browser
         await Swal.fire({
