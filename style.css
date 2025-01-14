@@ -12,3 +12,14 @@ body{background-color:#101010;font-family: 'Quicksand', sans-serif;padding: 25px
 
 .kolomteks{position:relative;padding:16px 30px 16px 30px;background:rgba(0, 0, 0, .50);color:white;font-size:.90rem;line-height:1.6em;border-radius:10px;overflow:hidden} .kolomteks p{text-align:center;}
 .kolomteks::after{content:'\201D';position:absolute;left:14px;top:18px; font-size:50px; min-width:15px;text-align:center}
+
+#overlay-lock {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.0);
+    z-index: 9998; /* Harus lebih rendah dari SweetAlert */
+    pointer-events: none; /* Tidak bisa diklik */
+}
