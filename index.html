@@ -468,7 +468,8 @@ async function uploadFotoKeGitHub(file) {
     };
 
     // Endpoint API GitHub untuk upload file
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${fileName}`;
+    const url = `https://api.github.com/repos/malwih/pasukanaerox.github.io/contents/images/{file-name}
+`;
 
     // Kirim request ke API GitHub
     const response = await fetch(url, {
