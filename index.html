@@ -447,103 +447,80 @@ while (!persen) {
     }
 }
 
-// Fungsi untuk upload foto ke GitHub
-async function uploadFotoKeGitHub(file) {
-    const token = "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";
-    const repoOwner = "malwih"; // Nama pengguna GitHub Anda
-    const repoName = "pasukanaerox.github.io"; // Nama repository
-    const fileName = `images/${Date.now()}_${file.name}`; // Nama file yang akan di-upload, termasuk timestamp untuk unik
-
-    // Konversi file ke Base64
-    const content = await fileToBase64(file);
-
-    // Payload untuk API GitHub
-    const data = {
-        message: `Upload foto ${file.name}`, // Pesan commit
-        committer: {
-            name: "Malwih", // Ganti dengan nama Anda
-            email: "malwihidayatt@gmail.com" // Ganti dengan email Anda
-        },
-        content: content // Konten file dalam Base64
-    };
-
-    // Endpoint API GitHub untuk upload file
-    const url = `https://api.github.com/repos/malwih/pasukanaerox.github.io/contents/images/{file-name}
-`;
-
-    // Kirim request ke API GitHub
-    const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-
-    const responseData = await response.json();
-    if (responseData.content && responseData.content.download_url) {
-        return responseData.content.download_url; // URL file yang dapat diakses publik
-    } else {
-        throw new Error("Upload gambar ke GitHub gagal");
-    }
-}
-
-// Fungsi untuk mengonversi file ke Base64
-function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result.split(",")[1]); // Ambil data base64
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-    });
-}
-
-// Input Foto User bersama Motor Aerox
-let fotoUser;
-while (!fotoUser) {
-    const { value: inputFoto } = await Swal.fire({
-        title: 'Unggah Foto dengan Motor Aerox kamu!',
+// Input Foto User Bersama Motor Aerox
+while (!foto) {
+    var { value: inputFoto } = await swals.fire({
+        title: 'Unggah Foto Kamu Bersama Motor Aerox',
         html: `
             <div style="display: flex; flex-direction: column; gap: 8px;">
-                <input type="file" id="fotoUser" accept="image/*" style="padding: 8px;" />
-                <div style="margin-top: 8px; font-size: 14px; color: gray;">
-                    Pilih foto yang jelas menunjukkan kamu bersama motor Aerox kamu.
-                </div>
+                <label for="fotoUpload">Pilih Foto Kamu Bersama Motor Aerox:</label>
+                <input id="fotoUpload" type="file" style="width: 100%;" />
+                <div id="preview" style="margin-top: 8px;"></div>
             </div>
         `,
         confirmButtonText: 'Lanjut',
         showCancelButton: false,
-        preConfirm: async () => {
-            const fileInput = document.getElementById('fotoUser');
-            const file = fileInput.files[0];
+        preConfirm: () => {
+            const fotoInput = document.getElementById('fotoUpload');
+            const file = fotoInput.files[0];
 
             if (!file) {
-                Swal.showValidationMessage('Foto harus diunggah!');
+                Swal.showValidationMessage('Kamu harus memilih foto terlebih dahulu!');
                 return false;
             }
 
-            // Upload gambar ke GitHub
-            try {
-                const fileUrl = await uploadFotoKeGitHub(file);
-                return fileUrl; // Kembalikan URL file GitHub
-            } catch (error) {
-                Swal.showValidationMessage('Upload gagal, coba lagi!');
+            // Memeriksa apakah file adalah gambar
+            if (!file.type.startsWith('image/')) {
+                Swal.showValidationMessage('File yang kamu pilih bukan gambar!');
                 return false;
             }
+
+            return file;
+        },
+        didOpen: () => {
+            // Menampilkan preview gambar saat dipilih
+            const fotoInput = document.getElementById('fotoUpload');
+            const previewDiv = document.getElementById('preview');
+
+            fotoInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewDiv.innerHTML = `<img src="${e.target.result}" alt="Preview Foto" style="max-width: 100%; height: auto; border: 1px solid #ccc; padding: 8px;" />`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         },
     });
 
     if (inputFoto) {
-        fotoUser = inputFoto;
-        window.fotoUser = fotoUser; // Simpan URL gambar ke variabel global jika diperlukan
+        // Mengunggah gambar ke postimages.org
+        const formData = new FormData();
+        formData.append('file', inputFoto);
+        
+        try {
+            const response = await fetch('https://api.postimages.org/upload', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                foto = result.url;  // Mendapatkan URL foto yang diunggah
+                window.foto = foto;
+            } else {
+                await swals.fire('Terjadi kesalahan saat mengunggah gambar. Silakan coba lagi!');
+            }
+        } catch (error) {
+            await swals.fire('Terjadi kesalahan dalam mengunggah gambar!');
+        }
     } else {
-        await Swal.fire('Foto harus diunggah untuk melanjutkan!');
+        await swals.fire('Kamu harus mengunggah foto bersama motor Aerox!');
     }
 }
 
-// Gunakan URL fotoUser jika diperlukan
-console.log('URL Foto User:', fotoUser);
 
 
 
