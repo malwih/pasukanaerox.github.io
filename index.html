@@ -16,6 +16,9 @@
 <div id="sp2" style="display:none;"><span id="text5"></span></div>
 </div>
 
+<audio id="musikLatar" src="avangard.mp3"></audio>
+
+
 <div id='Content' style="display:none"><div id='koteks' class="kolomteks"><p id="text"></p><p id="text2"></p><p id="text3"></p><p id="text4" style="font-weight:700;font-size: 12px"></p></div><div id="trm" class="contTom"><a style="margin:12px 12px 12px 12px;" class='button' onClick="finish();"></i>Setuju!</a></div><div id="whs" class="contTom"><a class='button whatsapp' onClick='bukaWa();'><i class='icon whatsapp'></i>Join Sekarang</a></div></div>
 
 <!-- Teks Mengetik dan WhatsApp --><script>
@@ -42,6 +45,58 @@
                 allowOutsideClick: false,
             });
             async function mulai() {
+    
+// Ambil elemen audio
+const audioElement = document.getElementById("musikLatar");
+
+// Fungsi untuk memutar musik
+async function putarMusik() {
+    try {
+        await audioElement.play();
+        console.log("Musik berhasil diputar.");
+    } catch (err) {
+        console.error("Gagal memutar musik:", err);
+        await Swal.fire({
+            icon: "error",
+            title: "Musik tidak dapat diputar",
+            text: "Pastikan browser mengizinkan pemutaran audio!",
+        });
+    }
+}
+
+// Tampilkan notifikasi "Siap bergabung di Pasukan Aerox?"
+const { isConfirmed } = await Swal.fire({
+    title: "Siap bergabung di Pasukan Aerox?",
+    confirmButtonText: "Siap",
+    showCancelButton: true,
+    cancelButtonText: "Tidak",
+});
+
+if (isConfirmed) {
+    // Mulai memutar musik setelah klik "Siap!"
+    await putarMusik();
+
+// Lakukan sesuatu setelah nama diterima
+document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
+    } else {
+        // Jika pengguna klik "Batal", coba tutup browser
+        await Swal.fire({
+            icon: "info",
+            title: "Sampai jumpa!",
+            text: "Tab akan ditutup.",
+            showConfirmButton: false,
+            timer: 2000,
+        });
+
+        // Tutup tab
+        window.close();
+
+        // Jika `window.close()` gagal, beri tahu pengguna
+        setTimeout(() => {
+            alert("Silakan tutup tab ini secara manual.");
+        }, 2000);
+    }
+                
     var nama, alamat, kab, plat, sim, nowa, akunig, persen;
 
     // Input Nama
@@ -498,10 +553,5 @@ while (!foto) {
 //funct Mulai
 mulai()            
 </script>
-
-<audio autoplay hidden>
-    <source src="avangard.mp3" type="audio/mpeg">
-    Browsermu tidak mendukung tag audio, upgrade donk!
-  </audio>
 </body>
 </html>
