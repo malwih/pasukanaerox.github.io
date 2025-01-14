@@ -30,7 +30,7 @@
   text5 = "Keep Solid, "
 
 //Opsi WhatsApp
- function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "Nama Lengkap: " + nama + "%0A" + "Alamat Lengkap: " + alamat + ", " + kab + "%0A" + "Usia: " + persen + " Tahun" + "%0A" + "No. Plat: " + plat + "%0A" + "No. SIM/STNK: " + sim + "%0A"+ "No.WA: " + nowa + "%0A" + "Akun IG: " + "http://instagram.com/" + akunig + "%0A%0A" + "*" + "KEMUDIAN KIRIM FOTO MOTOR AEROXNYA BERSAMA OWNERNYA!!" + "*"   + "%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
+ function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + fotoUser + "%0A%0A" + "Nama Lengkap: " + nama + "%0A" + "Alamat Lengkap: " + alamat + ", " + kab + "%0A" + "Usia: " + persen + " Tahun" + "%0A" + "No. Plat: " + plat + "%0A" + "No. SIM/STNK: " + sim + "%0A"+ "No.WA: " + nowa + "%0A" + "Akun IG: " + "http://instagram.com/" + akunig + "%0A%0A" + "*" + "KEMUDIAN KIRIM FOTO MOTOR AEROXNYA BERSAMA OWNERNYA!!" + "*"   + "%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
 </script>
  
 <script type="text/javascript">
@@ -41,94 +41,490 @@
                 confirmButtonColor: '#00B487',
                 allowOutsideClick: false,
             });
-            async function mulai(){
-                var { value: nama } = await swals.fire({
-                    title: 'Nama lengkap kamu?',
-                    input: 'text',
-                    confirmButtonText: 'Lanjut',
-                    showCancelButton: false,
-                });
-                if(nama){
-                	window.nama = nama;                    
-                    text5 = text5 + window.nama + "!";  
+            async function mulai() {
+    var nama, alamat, kab, plat, sim, nowa, akunig, persen;
 
-                var { value: alamat } = await swals.fire({
-                    title: 'Alamat domisili sekarang?',
-                    input: 'text',
-                    inputLabel: '(Desa, RT/RW, Kelurahan, Kecamatan)',
-                    confirmButtonText: 'Lanjut',
-                    showCancelButton: false,
-                });
-                window.alamat = alamat;
+    // Input Nama
+    while (!nama) {
+        var { value: inputNama } = await swals.fire({
+            title: 'Nama lengkap kamu?',
+            input: 'text',
+            confirmButtonText: 'Lanjut',
+            showCancelButton: false,
+        });
 
-                var { value: kab } = await swals.fire({
-                    title: 'Kota/Kabupaten mana?',
-                    input: 'text',
-                    confirmButtonText: 'Lanjut',
-                    showCancelButton: false,
-                });
-                window.kab = kab;
+        if (inputNama && inputNama.trim() !== "") {
+            nama = inputNama;
+        } else {
+            await swals.fire('Nama tidak boleh kosong, ya!');
+        }
+    }
 
-                  var { value: plat } = await swals.fire({
-                    title: 'Nomor Plat?',
-                    input: 'text',
-                    confirmButtonText: 'Lanjut',
-                    showCancelButton: false,
-                });
-                window.kab = kab;
+    window.nama = nama;
+    text5 = text5 + window.nama + "!";
 
-                  var { value: sim } = await swals.fire({
-                    title: 'Nomor SIM/STNK?',
-                    input: 'number',
-                    confirmButtonText: 'Lanjut',
-                    cancelButtonText: 'Tidak Punya'
-                    showCancelButton: true,
-                });
-                window.kab = kab;
+    // Input Alamat dengan 9 kolom (Beberapa wajib diisi)
+while (!alamat) {
+    var { value: inputAlamat } = await swals.fire({
+        title: 'Alamat Domisili?',
+        html: `
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <input id="namaJalan" type="text" placeholder="Nama Jalan (Opsional)" style="width: 100%;" />
+                <input id="desaPerumahan" type="text" placeholder="Desa/Perumahan (Wajib)" style="width: 100%;" />
+                <input id="noRumah" type="text" placeholder="No. Rumah/Blok (Wajib)" style="width: 100%;" />
+                <div style="display: flex; gap: 8px;">
+                    <input id="rt" type="number" placeholder="RT (Wajib)" style="width: 50%;" />
+                    <input id="rw" type="number" placeholder="RW (Wajib)" style="width: 50%;" />
+                </div>
+                <input id="kelurahan" type="text" placeholder="Kelurahan (Wajib)" style="width: 100%;" />
+                <input id="kecamatan" type="text" placeholder="Kecamatan (Wajib)" style="width: 100%;" />
+                <input id="kabupaten" type="text" placeholder="Kabupaten/Kota (Opsional)" style="width: 100%;" />
+                <input id="kodePos" type="number" placeholder="Kode Pos (Opsional)" style="width: 100%;" />
+            </div>
+        `,
+        confirmButtonText: 'Lanjut',
+        showCancelButton: false,
+        preConfirm: () => {
+            const namaJalan = document.getElementById('namaJalan').value.trim();
+            const desaPerumahan = document.getElementById('desaPerumahan').value.trim();
+            const noRumah = document.getElementById('noRumah').value.trim();
+            const rt = document.getElementById('rt').value.trim();
+            const rw = document.getElementById('rw').value.trim();
+            const kelurahan = document.getElementById('kelurahan').value.trim();
+            const kecamatan = document.getElementById('kecamatan').value.trim();
+            const kabupaten = document.getElementById('kabupaten').value.trim();
+            const kodePos = document.getElementById('kodePos').value.trim();
 
-                  var { value: nowa } = await swals.fire({
-                    title: 'Nomor whatsapp kamu?',
-                    input: 'number',
-                    confirmButtonText: 'Lanjut',
-                    showCancelButton: false,
-                });
-                window.nowa = nowa;
-
-                           
-
-                var { value: akunig } = await swals.fire({
-                    title: 'Username instagram kamu?',
-                    input: 'text',
-                    inputLabel: '@',
-                    confirmButtonText: 'Lanjut',
-                    showCancelButton: false,
-                });
-                window.akunig = akunig;
-   
-                  
-                  var { value: persen } = await swals.fire({
-                            title: nama + ' mau gabung di ' + author + ' kan?',
-                            input: 'range',
-                            inputLabel: 'Umur ' + nama + ' berapa tahun?',
-                            inputAttributes: {
-                                min: 17,
-                                max: 50,
-                            },
-                            inputValue: 20
-                            });                
-                  if(persen){
-                	window.persen = persen ; 
-                   
-                    document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
-                    text4 = "Dari: " + author + ", Untuk: " + nama + ".";
-                    await swals.fire(`Terima Kasih &#128149;`);
-                    ketik();showDiv();showFt();
-                  }
-                } else {
-                    await swals.fire('Tidak boleh kosong, ya!');
-                  mulai();
-                  }
+            if (!desaPerumahan) {
+                Swal.showValidationMessage('Desa/Perumahan wajib diisi!');
+                return false;
             }
+            if (!noRumah) {
+                Swal.showValidationMessage('No. Rumah/Blok wajib diisi!');
+                return false;
+            }
+            if (!rt) {
+                Swal.showValidationMessage('RT wajib diisi!');
+                return false;
+            }
+            if (!rw) {
+                Swal.showValidationMessage('RW wajib diisi!');
+                return false;
+            }
+            if (!kelurahan) {
+                Swal.showValidationMessage('Kelurahan wajib diisi!');
+                return false;
+            }
+            if (!kecamatan) {
+                Swal.showValidationMessage('Kecamatan wajib diisi!');
+                return false;
+            }
+
+            return {
+                namaJalan,
+                desaPerumahan,
+                noRumah,
+                rt,
+                rw,
+                kelurahan,
+                kecamatan,
+                kabupaten,
+                kodePos,
+            };
+        },
+    });
+
+    if (inputAlamat) {
+        // Gabungkan semua input menjadi alamat lengkap
+        alamat = `
+            ${inputAlamat.namaJalan ? inputAlamat.namaJalan + ', ' : ''}
+            ${inputAlamat.desaPerumahan}, No. ${inputAlamat.noRumah}, 
+            RT ${inputAlamat.rt}/RW ${inputAlamat.rw}, 
+            Kel. ${inputAlamat.kelurahan}, Kec. ${inputAlamat.kecamatan}, 
+            ${inputAlamat.kabupaten ? inputAlamat.kabupaten + ', ' : ''} 
+            ${inputAlamat.kodePos ? 'Kode Pos: ' + inputAlamat.kodePos : ''}
+        `.trim().replace(/\s+/g, ' ');
+
+        window.alamat = alamat;
+    } else {
+        await swals.fire('Alamat tidak boleh kosong, ya!');
+    }
+}
+
+
+    // Input Kota/Kabupaten dengan dropdown
+    while (!kab) {
+        var { value: inputKab } = await swals.fire({
+            title: 'Kota/Kabupaten mana?',
+            input: 'select',
+            inputOptions: {
+                'Aceh': {
+                    'Banda Aceh': 'Banda Aceh',
+                    'Sabang': 'Sabang',
+                    'Lhokseumawe': 'Lhokseumawe',
+                },
+                'Banten': {
+                    'Serang': 'Serang',
+                    'Cilegon': 'Cilegon',
+                    'Tangerang': 'Tangerang',
+                },
+                'Jawa Barat': {
+                    'Bandung': 'Bandung',
+                    'Bekasi': 'Bekasi',
+                    'Bogor': 'Bogor',
+                    'Depok': 'Depok',
+                    'Cimahi': 'Cimahi',
+                },
+                'Jawa Timur': {
+                    'Surabaya': 'Surabaya',
+                    'Malang': 'Malang',
+                    'Kediri': 'Kediri',
+                },
+                'Jawa Tengah': {
+                    'Semarang': 'Semarang',
+                    'Solo': 'Solo',
+                    'Magelang': 'Magelang',
+                },
+                'Sumatera Utara': {
+                    'Medan': 'Medan',
+                    'Binjai': 'Binjai',
+                    'Deli Serdang': 'Deli Serdang',
+                },
+            },
+            inputPlaceholder: 'Pilih Kota/Kabupaten',
+            confirmButtonText: 'Lanjut',
+            showCancelButton: false,
+        });
+
+        if (inputKab && inputKab.trim() !== "") {
+            kab = inputKab;
+        } else {
+            await swals.fire('Kota/Kabupaten tidak boleh kosong, ya!');
+        }
+    }
+
+    window.kab = kab;
+
+    // Validasi Kota/Kabupaten
+    if (kab !== 'Bekasi' && kab !== 'Bandung') {
+        await swals.fire({
+            icon: 'error',
+            title: 'Maaf!',
+            text: `Pasukan Aerox belum tersedia di ${kab}!`,
+        });
+
+        // Kembali ke pengisian Kota/Kabupaten
+        return mulai();
+    }
+
+    // Input Nomor Plat (3 kolom: kode kota, nomor plat, alokasi TNKB)
+while (!plat) {
+    var { value: inputPlat } = await swals.fire({
+        title: 'Nomor Plat?',
+        html: `
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <div style="display: flex; gap: 4px;">
+                    <input id="kodeKota" type="text" maxlength="2" placeholder="Kode Kota" style="width: 60px; text-transform: uppercase;" />
+                    <input id="nomorPlat" type="number" maxlength="4" placeholder="Nomor Plat" style="width: 80px;" />
+                    <input id="alokasiTNKB" type="text" maxlength="4" placeholder="Alokasi TNKB" style="width: 80px; text-transform: uppercase;" />
+                </div>
+                <p style="font-size: 12px; color: gray;">Contoh: D 1234 AB</p>
+            </div>
+        `,
+        showCancelButton: false,
+        confirmButtonText: 'Lanjut',
+        preConfirm: () => {
+            const kodeKota = document.getElementById('kodeKota').value.trim().toUpperCase();
+            const nomorPlat = document.getElementById('nomorPlat').value.trim();
+            const alokasiTNKB = document.getElementById('alokasiTNKB').value.trim().toUpperCase();
+
+            if (!/^[A-Z]{1,2}$/.test(kodeKota)) {
+                Swal.showValidationMessage('Kode Kota harus berupa 1-2 huruf!');
+                return false;
+            }
+            if (!/^\d{1,4}$/.test(nomorPlat)) {
+                Swal.showValidationMessage('Nomor Plat harus berupa 1-4 digit angka!');
+                return false;
+            }
+            if (!/^[A-Z]{1,4}$/.test(alokasiTNKB)) {
+                Swal.showValidationMessage('Alokasi TNKB harus berupa 1-4 huruf!');
+                return false;
+            }
+
+            return { kodeKota, nomorPlat, alokasiTNKB };
+        },
+    });
+
+    if (inputPlat) {
+        plat = `${inputPlat.kodeKota} ${inputPlat.nomorPlat} ${inputPlat.alokasiTNKB}`;
+    } else {
+        await swals.fire('Nomor Plat tidak boleh kosong, ya!');
+    }
+}
+
+window.plat = plat;
+
+    // Input SIM/STNK dengan Radio Button
+while (!sim) {
+    var { value: inputSIMSTNK } = await swals.fire({
+        title: 'Pilih tipe dokumen dan masukkan nomor:',
+        html: `
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                    <label><input type="radio" name="tipe" value="SIM" id="radioSIM"> SIM</label>
+                    <label><input type="radio" name="tipe" value="STNK" id="radioSTNK"> STNK</label>
+                </div>
+                <input id="nomorDokumen" type="number" placeholder="Masukkan nomor dokumen" style="width: 100%; display: none;" />
+            </div>
+        `,
+        confirmButtonText: 'Lanjut',
+        showCancelButton: true,
+        cancelButtonText: 'Tidak Punya',
+        preConfirm: () => {
+            const radioSIM = document.getElementById('radioSIM').checked;
+            const radioSTNK = document.getElementById('radioSTNK').checked;
+            const nomorDokumen = document.getElementById('nomorDokumen').value.trim();
+
+            if (!radioSIM && !radioSTNK) {
+                Swal.showValidationMessage('Silakan pilih tipe dokumen (SIM atau STNK)!');
+                return false;
+            }
+
+            if (!nomorDokumen) {
+                Swal.showValidationMessage('Nomor dokumen wajib diisi!');
+                return false;
+            }
+
+            return {
+                tipe: radioSIM ? 'SIM' : 'STNK',
+                nomor: nomorDokumen,
+            };
+        },
+        didOpen: () => {
+            // Event listener untuk menampilkan input nomor dokumen ketika tipe dipilih
+            const radioButtons = document.querySelectorAll('input[name="tipe"]');
+            const nomorInput = document.getElementById('nomorDokumen');
+
+            radioButtons.forEach((radio) => {
+                radio.addEventListener('change', () => {
+                    nomorInput.style.display = 'block';
+                });
+            });
+        },
+    });
+
+    if (inputSIMSTNK) {
+        sim = `${inputSIMSTNK.tipe}: ${inputSIMSTNK.nomor}`;
+        window.sim = sim;
+    } else {
+        await swals.fire('Kamu harus punya SIM atau STNK untuk melanjutkan!');
+    }
+}
+
+    // Input Nomor WhatsApp
+while (!nowa) {
+    var { value: inputNoWA } = await swals.fire({
+        title: 'Masukkan nomor WhatsApp kamu:',
+        html: `
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 16px; font-weight: bold;">+62</span>
+                <input id="nomorWA" type="number" placeholder="81234567890" style="flex: 1; padding: 8px; font-size: 14px;" />
+            </div>
+        `,
+        confirmButtonText: 'Lanjut',
+        showCancelButton: true,
+        cancelButtonText: 'Batal',
+        preConfirm: () => {
+            const nomorWA = document.getElementById('nomorWA').value.trim();
+
+            // Validasi input
+            if (!nomorWA || nomorWA.length < 9 || nomorWA.length > 12) {
+                Swal.showValidationMessage('Nomor WhatsApp harus terdiri dari 9-12 digit angka!');
+                return false;
+            }
+
+            if (!/^[0-9]+$/.test(nomorWA)) {
+                Swal.showValidationMessage('Nomor WhatsApp hanya boleh mengandung angka!');
+                return false;
+            }
+
+            return `+62${nomorWA}`;
+        },
+    });
+
+    if (inputNoWA) {
+        nowa = inputNoWA;
+        window.nowa = nowa;
+    } else {
+        await swals.fire('Nomor WhatsApp wajib diisi untuk melanjutkan!');
+    }
+}
+
+    // Input Username Instagram
+while (!akunig) {
+    var { value: usernameIG } = await swals.fire({
+        title: 'Masukkan username Instagram kamu:',
+        html: `
+            <input id="usernameIG" type="text" placeholder="Masukkan username tanpa @" style="width: 100%; padding: 8px; font-size: 14px;" />
+        `,
+        confirmButtonText: 'Lanjut',
+        showCancelButton: true,
+        cancelButtonText: 'Batal',
+        preConfirm: () => {
+            const username = document.getElementById('usernameIG').value.trim();
+
+            if (!username) {
+                Swal.showValidationMessage('Username Instagram tidak boleh kosong!');
+                return false;
+            }
+
+            return username;
+        },
+    });
+
+    if (usernameIG) {
+        const profileUrl = `https://instagram.com/${usernameIG}`;
+        const confirmProfile = await swals.fire({
+            title: `Apakah ini profil Instagram kamu?`,
+            html: `
+                <a href="${profileUrl}" target="_blank" style="text-decoration: none; color: #3897f0; font-weight: bold;">
+                    ${profileUrl}
+                </a>
+                <div style="margin-top: 12px;">
+                    Klik tautan di atas untuk memeriksa profil kamu.
+                </div>
+            `,
+            confirmButtonText: 'Ya, Lanjut',
+            showCancelButton: true,
+            cancelButtonText: 'Tidak',
+        });
+
+        if (confirmProfile.isConfirmed) {
+            akunig = usernameIG;
+            window.akunig = akunig;
+        } else {
+            await swals.fire('Masukkan username Instagram yang benar!');
+        }
+    } else {
+        await swals.fire('Username Instagram wajib diisi!');
+    }
+}
+
+
+    // Input Umur (using dropdown)
+while (!persen) {
+    var { value: inputPersen } = await swals.fire({
+        title: nama + ' mau gabung di ' + author + ' kan?',
+        html: `
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label for="umur">Pilih umur (10-50 tahun):</label>
+                <select id="umur" style="padding: 8px;">
+                    ${Array.from({ length: 41 }, (_, i) => i + 10)
+                        .map(age => `<option value="${age}">${age} tahun</option>`)
+                        .join('')}
+                </select>
+            </div>
+        `,
+        confirmButtonText: 'Lanjut',
+        showCancelButton: false,
+        preConfirm: () => {
+            const selectedAge = document.getElementById('umur').value;
+
+            if (selectedAge < 16) {
+                Swal.showValidationMessage('Umur harus di atas 16 tahun!');
+                return false;
+            }
+
+            return selectedAge;
+        },
+    });
+
+    if (inputPersen) {
+        persen = inputPersen;
+        window.persen = persen;
+    } else {
+        await swals.fire('Umur harus dipilih, ya!');
+    }
+}
+
+// Fungsi untuk upload foto ke ImageShack
+async function uploadFotoKeImageShack(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Upload foto ke ImageShack API
+    const response = await fetch("https://api.imageshack.com/v2/images", {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer 04CFIPQV12d39556c8ff244c4378744d0d4521d7" // API key Anda
+        },
+        body: formData
+    });
+
+    const data = await response.json();
+    if (data.result && data.result.url) {
+        return data.result.url;  // URL publik dari gambar yang di-upload
+    } else {
+        throw new Error("Upload gambar gagal");
+    }
+}
+
+// Input Foto User bersama Motor Aerox
+let fotoUser;
+while (!fotoUser) {
+    var { value: inputFoto } = await swals.fire({
+        title: 'Unggah Foto dengan Motor Aerox kamu!',
+        html: `
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <input type="file" id="fotoUser" accept="image/*" style="padding: 8px;" />
+                <div style="margin-top: 8px; font-size: 14px; color: gray;">
+                    Pilih foto yang jelas menunjukkan kamu bersama motor Aerox kamu.
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Lanjut',
+        showCancelButton: false,
+        preConfirm: async () => {
+            const fileInput = document.getElementById('fotoUser');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                Swal.showValidationMessage('Foto harus diunggah!');
+                return false;
+            }
+
+            // Upload gambar ke ImageShack
+            try {
+                const fileUrl = await uploadFotoKeImageShack(file);
+                return fileUrl;  // Kembalikan URL ImageShack
+            } catch (error) {
+                Swal.showValidationMessage('Upload gagal, coba lagi!');
+                return false;
+            }
+        },
+    });
+
+    if (inputFoto) {
+        fotoUser = inputFoto;
+        window.fotoUser = fotoUser;
+    } else {
+        await swals.fire('Foto harus diunggah untuk melanjutkan!');
+    }
+}
+
+// Gunakan URL fotoUser jika diperlukan
+console.log('URL Foto User:', fotoUser);
+
+
+
+    document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
+    text4 = "Dari: " + author + ", Untuk: " + nama + ".";
+    await swals.fire(`Terima Kasih &#128149;`);
+    ketik();
+    showDiv();
+    showFt();
+}
+
 //funct Mulai
 mulai()            
 </script>
