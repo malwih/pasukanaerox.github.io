@@ -30,7 +30,7 @@
   text5 = "Keep Solid, "
 
 //Opsi WhatsApp
- function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + fotoUser + "%0A%0A" + "Nama Lengkap: " + nama + "%0A" + "Alamat Lengkap: " + alamat + ", " + kab + "%0A" + "Usia: " + persen + " Tahun" + "%0A" + "No. Plat: " + plat + "%0A" + "No. SIM/STNK: " + sim + "%0A"+ "No.WA: " + nowa + "%0A" + "Akun IG: " + "http://instagram.com/" + akunig + "%0A%0A" + "*" + "KEMUDIAN KIRIM FOTO MOTOR AEROXNYA BERSAMA OWNERNYA!!" + "*"   + "%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
+ function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "*" + "Nama Lengkap:" + "*" + "%0A" + nama + "%0A" + "*" + "Alamat Lengkap:" + "*" + "%0A" + alamat + ", " + kab + "%0A" + "*" + "Usia:" + "*" + "%0A" + persen + " Tahun" + "%0A" + "*" + "No. Plat:" + "*" + "%0A" + plat + "%0A" + "*" + "No. SIM/STNK:" + "*" + "%0A" + sim + "%0A"+ "*" + "No.WA:" + "*" + "%0A" + nowa + "%0A" + "*" + "Foto :" + "*" + "%0A" + foto + "%0A" + "*" + "Akun IG:" + "*" + "%0A" + "http://instagram.com/" + akunig + "%0A%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
 </script>
  
 <script type="text/javascript">
@@ -78,8 +78,6 @@ while (!alamat) {
                 </div>
                 <input id="kelurahan" type="text" placeholder="Kelurahan (Wajib)" style="width: 100%;" />
                 <input id="kecamatan" type="text" placeholder="Kecamatan (Wajib)" style="width: 100%;" />
-                <input id="kabupaten" type="text" placeholder="Kabupaten/Kota (Opsional)" style="width: 100%;" />
-                <input id="kodePos" type="number" placeholder="Kode Pos (Opsional)" style="width: 100%;" />
             </div>
         `,
         confirmButtonText: 'Lanjut',
@@ -92,8 +90,6 @@ while (!alamat) {
             const rw = document.getElementById('rw').value.trim();
             const kelurahan = document.getElementById('kelurahan').value.trim();
             const kecamatan = document.getElementById('kecamatan').value.trim();
-            const kabupaten = document.getElementById('kabupaten').value.trim();
-            const kodePos = document.getElementById('kodePos').value.trim();
 
             if (!desaPerumahan) {
                 Swal.showValidationMessage('Desa/Perumahan wajib diisi!');
@@ -128,8 +124,6 @@ while (!alamat) {
                 rw,
                 kelurahan,
                 kecamatan,
-                kabupaten,
-                kodePos,
             };
         },
     });
@@ -140,9 +134,7 @@ while (!alamat) {
             ${inputAlamat.namaJalan ? inputAlamat.namaJalan + ', ' : ''}
             ${inputAlamat.desaPerumahan}, No. ${inputAlamat.noRumah}, 
             RT ${inputAlamat.rt}/RW ${inputAlamat.rw}, 
-            Kel. ${inputAlamat.kelurahan}, Kec. ${inputAlamat.kecamatan}, 
-            ${inputAlamat.kabupaten ? inputAlamat.kabupaten + ', ' : ''} 
-            ${inputAlamat.kodePos ? 'Kode Pos: ' + inputAlamat.kodePos : ''}
+            Kel. ${inputAlamat.kelurahan}, Kec. ${inputAlamat.kecamatan}
         `.trim().replace(/\s+/g, ' ');
 
         window.alamat = alamat;
@@ -167,6 +159,9 @@ while (!alamat) {
                     'Serang': 'Serang',
                     'Cilegon': 'Cilegon',
                     'Tangerang': 'Tangerang',
+                },
+                'DKI Jakarta': {
+                'Jakarta': 'Jakarta',
                 },
                 'Jawa Barat': {
                     'Bandung': 'Bandung',
@@ -206,7 +201,7 @@ while (!alamat) {
     window.kab = kab;
 
     // Validasi Kota/Kabupaten
-    if (kab !== 'Bekasi' && kab !== 'Bandung') {
+    if (kab !== 'Bekasi' && kab !== 'Bandung' && kab !== 'Jakarta') {
         await swals.fire({
             icon: 'error',
             title: 'Maaf!',
@@ -224,11 +219,10 @@ while (!plat) {
         html: `
             <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
                 <div style="display: flex; gap: 4px;">
-                    <input id="kodeKota" type="text" maxlength="2" placeholder="Kode Kota" style="width: 60px; text-transform: uppercase;" />
-                    <input id="nomorPlat" type="number" maxlength="4" placeholder="Nomor Plat" style="width: 80px;" />
-                    <input id="alokasiTNKB" type="text" maxlength="4" placeholder="Alokasi TNKB" style="width: 80px; text-transform: uppercase;" />
+                    <input id="kodeKota" type="text" maxlength="2" placeholder="D" style="width: 60px; text-transform: uppercase;" />
+                    <input id="nomorPlat" type="number" maxlength="4" placeholder="1234" style="width: 80px;" />
+                    <input id="alokasiTNKB" type="text" maxlength="4" placeholder="ABC" style="width: 80px; text-transform: uppercase;" />
                 </div>
-                <p style="font-size: 12px; color: gray;">Contoh: D 1234 AB</p>
             </div>
         `,
         showCancelButton: false,
@@ -263,6 +257,7 @@ while (!plat) {
 }
 
 window.plat = plat;
+
 
     // Input SIM/STNK dengan Radio Button
 while (!sim) {
@@ -447,62 +442,50 @@ while (!persen) {
     }
 }
 
-// SDK initialization
-var imagekit = new ImageKit({
-    publicKey: "public_a5V2uKiuIi2Gg7YtZL+CkahVKbM=",
-    urlEndpoint: "https://ik.imagekit.io/anmeevrbl",
-    authenticationEndpoint: "http://www.yourserver.com/auth"
-});
-
-// Fungsi untuk menghasilkan URL gambar dengan transformasi
-function generateImageURL(path) {
-    return imagekit.url({
-        path: path,
-        transformation: [
-            {
-                height: "300",
-                width: "400"
+// Langkah upload foto setelah memilih umur
+let foto = null;
+while (!foto) {
+    const { value: uploadedImage } = await swals.fire({
+        title: 'Upload foto bersama motor Aerox',
+        input: 'file',
+        inputAttributes: {
+            accept: 'image/*',
+        },
+        confirmButtonText: 'Lanjut',
+        showCancelButton: true,
+        cancelButtonText: 'Batal',
+        preConfirm: async (fileInput) => {
+            if (!fileInput) {
+                Swal.showValidationMessage('Foto wajib diupload!');
+                return false;
             }
-        ]
+
+            // Proses upload gambar ke API Imgbb
+            const formData = new FormData();
+            formData.append('image', fileInput);
+            const response = await fetch('https://api.imgbb.com/1/upload?key=8420bfc8cd6333200e22b4f73e731515', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                return result.data.url; // Mengembalikan URL gambar
+            } else {
+                Swal.showValidationMessage('Upload gambar gagal!');
+                return false;
+            }
+        },
     });
-}
 
-// Fungsi upload untuk mengambil file dan mengunggahnya
-function upload() {
-    var fileInput = document.getElementById("file1");
-    var file = fileInput.files[0];
-
-    // Cek jika file tidak dipilih
-    if (!file) {
-        alert("Silakan pilih gambar untuk diunggah");
-        return;
+    if (uploadedImage) {
+        foto = uploadedImage;
+        window.foto = foto;
+        await swals.fire(`Foto berhasil diupload!`);
+    } else {
+        await swals.fire('Foto tidak boleh kosong!');
     }
-
-    // Mengunggah file ke ImageKit
-    imagekit.upload({
-        file: file,
-        fileName: "user_aerox_photo.jpg", // Nama file bisa diubah sesuai keinginan
-        tags: ["aerox_photo"]
-    }, function (err, result) {
-        if (err) {
-            console.error("Terjadi kesalahan saat mengunggah gambar:", err);
-            alert("Terjadi kesalahan saat mengunggah foto. Coba lagi.");
-        } else {
-            // Menampilkan hasil URL gambar yang diunggah
-            console.log("Gambar berhasil diunggah:", result);
-            var imageUrl = generateImageURL(result.url); // Menghasilkan URL gambar dengan transformasi
-            console.log("URL gambar dengan transformasi:", imageUrl);
-            alert("Foto berhasil diunggah! URL gambar: " + imageUrl);
-        }
-    });
 }
-
-
-
-
-
-
-
 
     document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
     text4 = "Dari: " + author + ", Untuk: " + nama + ".";
