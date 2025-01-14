@@ -447,91 +447,56 @@ while (!persen) {
     }
 }
 
-// Function to upload the image
-async function uploadImage() {
-    return new Promise((resolve, reject) => {
-        var imagekit = new ImageKit({
-            publicKey: "public_a5V2uKiuIi2Gg7YtZL+CkahVKbM=",
-            urlEndpoint: "https://ik.imagekit.io/anmeevrbl",
-            authenticationEndpoint: "http://www.yourserver.com/auth",
-        });
+// SDK initialization
+var imagekit = new ImageKit({
+    publicKey: "public_a5V2uKiuIi2Gg7YtZL+CkahVKbM=",
+    urlEndpoint: "https://ik.imagekit.io/anmeevrbl",
+    authenticationEndpoint: "http://www.yourserver.com/auth"
+});
 
-        var file = document.getElementById("file1");
-
-        imagekit.upload(
+// Fungsi untuk menghasilkan URL gambar dengan transformasi
+function generateImageURL(path) {
+    return imagekit.url({
+        path: path,
+        transformation: [
             {
-                file: file.files[0],
-                fileName: "user_aerox_photo.jpg",
-                tags: ["aerox_photo"],
-            },
-            function (err, result) {
-                if (err) {
-                    console.error("Image upload failed:", err);
-                    reject(err);
-                } else {
-                    console.log("Image uploaded successfully:", result);
-                    // Image URL after transformation
-                    const imageUrl = imagekit.url({
-                        src: result.url,
-                        transformation: [
-                            { height: 300, width: 400 }
-                        ]
-                    });
-                    resolve(imageUrl);
-                }
+                height: "300",
+                width: "400"
             }
-        );
+        ]
     });
 }
 
-// Input Foto User Bersama Motor Aerox
-async function inputFoto() {
-    var userImageURL;
+// Fungsi upload untuk mengambil file dan mengunggahnya
+function upload() {
+    var fileInput = document.getElementById("file1");
+    var file = fileInput.files[0];
 
-    // Prompt to upload photo
-    while (!userImageURL) {
-        var { value: fileInput } = await swals.fire({
-            title: 'Upload foto kamu bersama motor Aerox!',
-            html: `
-                <input type="file" id="file1" accept="image/*" style="width: 100%;" />
-            `,
-            confirmButtonText: 'Upload',
-            showCancelButton: true,
-            cancelButtonText: 'Batal',
-            preConfirm: async () => {
-                const file = document.getElementById("file1").files[0];
-
-                if (!file) {
-                    Swal.showValidationMessage('Foto wajib diupload!');
-                    return false;
-                }
-
-                try {
-                    // Upload the image using ImageKit API
-                    userImageURL = await uploadImage();
-                    return true;
-                } catch (error) {
-                    Swal.showValidationMessage('Gagal mengupload foto!');
-                    return false;
-                }
-            },
-        });
-
-        if (userImageURL) {
-            // Save the image URL to the global window object
-            window.userImageURL = userImageURL;
-            console.log("User image uploaded successfully: " + userImageURL);
-        } else {
-            await swals.fire('Foto harus diupload untuk melanjutkan!');
-        }
+    // Cek jika file tidak dipilih
+    if (!file) {
+        alert("Silakan pilih gambar untuk diunggah");
+        return;
     }
+
+    // Mengunggah file ke ImageKit
+    imagekit.upload({
+        file: file,
+        fileName: "user_aerox_photo.jpg", // Nama file bisa diubah sesuai keinginan
+        tags: ["aerox_photo"]
+    }, function (err, result) {
+        if (err) {
+            console.error("Terjadi kesalahan saat mengunggah gambar:", err);
+            alert("Terjadi kesalahan saat mengunggah foto. Coba lagi.");
+        } else {
+            // Menampilkan hasil URL gambar yang diunggah
+            console.log("Gambar berhasil diunggah:", result);
+            var imageUrl = generateImageURL(result.url); // Menghasilkan URL gambar dengan transformasi
+            console.log("URL gambar dengan transformasi:", imageUrl);
+            alert("Foto berhasil diunggah! URL gambar: " + imageUrl);
+        }
+    });
 }
 
-// Add inputFoto function call in your main flow
-await inputFoto();
-
-// Continue with the rest of your form submission or other steps
-await swals.fire(`Terima Kasih &#128149;`);
 
 
 
