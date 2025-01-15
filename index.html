@@ -272,7 +272,7 @@ while (!alamat) {
     window.kab = kab;
 
     // Validasi Kota/Kabupaten
-    if (kab !== 'Bekasi' && kab !== 'Bandung' && kab !== 'Jakarta' && kab !== 'Cimahi') {
+    if (kab !== 'Bekasi' && kab !== 'Bandung' && kab !== 'Cimahi') {
         await swals.fire({
             icon: 'error',
             title: 'Maaf!',
@@ -787,7 +787,7 @@ async function colorBlindnessTest() {
         await Swal.fire({
             icon: 'warning',
             title: 'Tes Buta Warna Gagal!',
-            text: `Hasil: ${colorBlindnessPercentage.toFixed(2)}%. Kamu perlu minimal 80% untuk melanjutkan.`,
+            text: `Hasil: ${colorBlindnessPercentage.toFixed(2)}%. Kamu harus 100% untuk melanjutkan.`,
             confirmButtonText: 'Coba Lagi'
         });
 
