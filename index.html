@@ -15,6 +15,7 @@
 <span id="sp1"><b id="namamu"></b><div id="lope" style="display:inline-block;align-items:center;justify-content:center;">&#10084;&#65039;</div></span>
 <div id="sp2" style="display:none;"><span id="text5"></span></div>
 </div>
+  
 
 <audio id="musikLatar" src="avangard.mp3"></audio>
 <div id="overlay-lock" style="display: none;"></div>
@@ -34,7 +35,7 @@
   text5 = "Keep Solid, "
 
 //Opsi WhatsApp
- function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "*" + "Nama Lengkap:" + "*" + "%0A" + nama + "%0A" + "*" + "Alamat Lengkap:" + "*" + "%0A" + alamat + ", " + kab + "%0A" + "*" + "Usia:" + "*" + "%0A" + persen + " Tahun" + "%0A" + "*" + "No. Plat:" + "*" + "%0A" + plat + "%0A" + "*" + "No. SIM/STNK:" + "*" + "%0A" + sim + "%0A"+ "*" + "No.WA:" + "*" + "%0A" + nowa + "%0A" + "*" + "Foto :" + "*" + "%0A" + foto + "%0A" + "*" + "Akun IG:" + "*" + "%0A" + "http://instagram.com/" + akunig + "%0A%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
+ function bukaWa(){window.location = "https://api.whatsapp.com/send?phone=6285280091009&text=Hallo Admin " + "*" + author + "*" + "%0A%0A" + "Kenalin namaku " + "*" + nama + "*" + " umur " + "*" + persen + " Tahun" + "*" + " ingin bergabung di " + author + "%0A%0A" + "*" + "Nama Lengkap:" + "*" + "%0A" + nama + "%0A" + "*" + "Alamat Lengkap:" + "*" + "%0A" + alamat + ", " + kab + "%0A" + "*" + "Usia:" + "*" + "%0A" + persen + " Tahun" + "%0A" + "*" + "No. Plat:" + "*" + "%0A" + plat + "%0A" + "*" + "No. SIM/STNK:" + "*" + "%0A" + sim + "%0A"+ "*" + "No.WA:" + "*" + "%0A" + nowa + "%0A" + "*" + "Akun IG:" + "*" + "%0A" + "http://instagram.com/" + akunig + "%0A%0A" + "=============================" + "%0A" + "Wajib Follow Instagram dan TikTok PASUKAN AEROX" + "%0A" + "IG: https://instagram.com/pasukanaerox.id" + "%0A" + "TikTok: https://tiktok.com/@pasukanaerox" + "%0A%0A" + "*" + "Dikirim:" + "*" + "%20" + dateTime;} 
 </script>
  
 <script type="text/javascript">
@@ -45,58 +46,63 @@
                 confirmButtonColor: '#00B487',
                 allowOutsideClick: false,
             });
-            async function mulai() {
-    
+            async function mulai() {    
 // Tampilkan overlay untuk mengunci klik
 const overlay = document.getElementById("overlay-lock");
     overlay.style.display = "block";
 
     // Ambil elemen audio
-    const audioElement = document.getElementById("musikLatar");
+const audioElement = document.getElementById("musikLatar");
 
-    // Fungsi untuk memutar musik
-    async function putarMusik() {
-        try {
+// Fungsi untuk memutar musik
+async function putarMusik() {
+    try {
+        if (audioElement.paused || audioElement.ended) {
+            // Jika musik belum diputar atau sudah selesai, mulai dari awal
             await audioElement.play();
             console.log("Musik berhasil diputar.");
-        } catch (err) {
-            console.error("Gagal memutar musik:", err);
-            await Swal.fire({
-                icon: "error",
-                title: "Musik tidak dapat diputar",
-                text: "Pastikan browser mengizinkan pemutaran audio!",
-            });
+        } else {
+            // Jika musik sudah diputar dan masih berlanjut, lanjutkan pemutaran
+            console.log("Musik sedang diputar...");
         }
-    }
-
-    // Tampilkan notifikasi "Siap bergabung di Pasukan Aerox?"
-    const { isConfirmed } = await Swal.fire({
-        title: "Siap bergabung di Pasukan Aerox?",
-        text: "Klik 'Siap!' untuk memulai perjalanan Anda.",
-        confirmButtonText: "Siap!",
-        allowOutsideClick: false, // Nonaktifkan klik di luar modal
-        allowEscapeKey: false,   // Nonaktifkan tombol escape
-        allowEnterKey: true,     // Izinkan tombol enter
-    });
-
-    if (isConfirmed) {
-        // Mulai memutar musik setelah klik "Siap!"
-        await putarMusik();
-
-        // Sembunyikan overlay setelah selesai
-        overlay.style.display = "none";
-
-        // Lakukan sesuatu setelah nama diterima
-        document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
-    } else {
-        // Jika pengguna klik "Batal", coba tutup browser
+    } catch (err) {
+        console.error("Gagal memutar musik:", err);
         await Swal.fire({
-            icon: "info",
-            title: "Sampai jumpa!",
-            text: "Tab akan ditutup.",
-            showConfirmButton: false,
-            timer: 2000,
+            icon: "error",
+            title: "Musik tidak dapat diputar",
+            text: "Pastikan browser mengizinkan pemutaran audio!",
         });
+    }
+}
+
+// Tampilkan notifikasi "Siap bergabung di Pasukan Aerox?"
+const { isConfirmed } = await Swal.fire({
+    title: "Siap bergabung di Pasukan Aerox?",
+    text: "Klik 'Siap!' untuk memulai perjalanan Anda.",
+    confirmButtonText: "Siap!",
+    allowOutsideClick: false, // Nonaktifkan klik di luar modal
+    allowEscapeKey: false,   // Nonaktifkan tombol escape
+    allowEnterKey: true,     // Izinkan tombol enter
+});
+
+if (isConfirmed) {
+    // Mulai memutar musik setelah klik "Siap!"
+    await putarMusik();
+
+    // Sembunyikan overlay setelah selesai
+    overlay.style.display = "none";
+
+    // Lakukan sesuatu setelah nama diterima
+    document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
+} else {
+    // Jika pengguna klik "Batal", coba tutup browser
+    await Swal.fire({
+        icon: "info",
+        title: "Sampai jumpa!",
+        text: "Tab akan ditutup.",
+        showConfirmButton: false,
+        timer: 2000,
+    });
 
         // Tutup tab
         window.close();
@@ -266,7 +272,7 @@ while (!alamat) {
     window.kab = kab;
 
     // Validasi Kota/Kabupaten
-    if (kab !== 'Bekasi' && kab !== 'Bandung' && kab !== 'Cimahi') {
+    if (kab !== 'Bekasi' && kab !== 'Bandung' && kab !== 'Jakarta' && kab !== 'Cimahi') {
         await swals.fire({
             icon: 'error',
             title: 'Maaf!',
@@ -525,32 +531,181 @@ while (!foto) {
                 return false;
             }
 
-            // Proses upload gambar ke API Imgbb
-            const formData = new FormData();
-            formData.append('image', fileInput);
-            const response = await fetch('https://api.imgbb.com/1/upload?key=8420bfc8cd6333200e22b4f73e731515', {
-                method: 'POST',
-                body: formData,
-            });
+            // Randomly simulate an upload delay between 3 to 5 seconds (3000ms to 5000ms)
+            const randomDelay = Math.floor(Math.random() * 2000) + 3000;
+            let progress = 0;
 
-            const result = await response.json();
-            if (result.success) {
-                return result.data.url; // Mengembalikan URL gambar
-            } else {
-                Swal.showValidationMessage('Upload gambar gagal!');
-                return false;
-            }
+            // Simulate progress bar with delay
+            const progressInterval = setInterval(() => {
+                progress += 10;
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                }
+
+                // Update the progress bar
+                Swal.update({
+                    title: `Uploading... ${progress}%`,
+                    html: `<progress value="${progress}" max="100" style="width: 100%"></progress>`,
+                });
+            }, randomDelay / 10); // Divide the total delay by 10 for smoother animation (each step = 10%)
+
+            // Simulate upload by waiting for the random delay
+            await new Promise(resolve => setTimeout(resolve, randomDelay));
+
+            // Using URL.createObjectURL to create a temporary URL for the uploaded file
+            const fileURL = URL.createObjectURL(fileInput);
+            return fileURL; // Returning the temporary URL
         },
     });
 
     if (uploadedImage) {
         foto = uploadedImage;
         window.foto = foto;
+
+        // Displaying the uploaded image in an img element with id 'ftKm'
+        const imgElement = document.getElementById('ftKm');
+        imgElement.src = foto;
+
         await swals.fire(`Foto berhasil diupload!`);
     } else {
         await swals.fire('Foto tidak boleh kosong!');
     }
 }
+
+
+
+
+// Pertanyaan survei komitmen
+const questions = [
+    "Apakah kamu bersedia mengikuti acara Pasukan Aerox secara rutin?",
+    "Apakah kamu nyaman berinteraksi dengan anggota baru?",
+    "Apakah kamu memahami bahwa Pasukan Aerox bukan komunitas?",
+    "Apakah kamu memiliki minat terhadap kegiatan otomotif?",
+    "Apakah kamu bersedia membantu promosi Pasukan Aerox di media sosial?",
+    "Apakah kamu bersedia berkontribusi dalam kegiatan Pasukan Aerox?",
+    "Apakah kamu merasa Pasukan Aerox ini dapat memberikan nilai tambah untukmu?",
+    "Apakah kamu bersedia mematuhi aturan Pasukan Aerox?",
+    "Apakah kamu bersedia membantu anggota jika diperlukan?",
+    "Apakah kamu bersedia menghadiri rapat Pasukan Aerox jika ada acara?",
+    "Apakah kamu memiliki waktu untuk aktif di kegiatan Pasukan Aerox?",
+    "Apakah kamu setuju untuk mendukung sesama anggota Pasukan Aerox?",
+    "Apakah kamu bersedia mengikuti acara Pasukan Aerox jika diadakan?",
+    "Apakah kamu merasa Pasukan Aerox ini sejalan dengan hobimu?",
+    "Apakah kamu siap menjadi anggota yang aktif?",
+    "Apakah kamu nyaman dengan kegiatan yang melibatkan motor?",
+    "Apakah kamu siap membantu menyelesaikan masalah dalam Pasukan Aerox?",
+    "Apakah kamu bersedia menjadi panitia dalam acara Pasukan Aerox?",
+    "Apakah kamu setuju untuk menjaga nama baik Pasukan Aerox?",
+    "Apakah kamu siap untuk mengikuti Pasukan Aerox dalam jangka panjang?"
+];
+
+async function startSurvey() {
+    let totalScore = 0;
+    const maxScore = questions.length * 5; // Maksimal skor: 20 soal x 5 (sangat setuju)
+
+    for (const question of questions) {
+        const { value: answer } = await Swal.fire({
+            title: question,
+            html: `
+                <div class="survey-options">
+                    <label class="survey-option">
+                        <input type="radio" name="answer" value="6"> Sangat Setuju
+                    </label>
+                    <label class="survey-option">
+                        <input type="radio" name="answer" value="5"> Setuju
+                    </label>
+                    <label class="survey-option">
+                        <input type="radio" name="answer" value="4"> Agak Setuju
+                    </label>
+                    <label class="survey-option">
+                        <input type="radio" name="answer" value="3"> Kurang Setuju
+                    </label>
+                    <label class="survey-option">
+                        <input type="radio" name="answer" value="2"> Tidak Setuju
+                    </label>
+                    <label class="survey-option">
+                        <input type="radio" name="answer" value="1"> Sangat Tidak Setuju
+                    </label>
+                </div>
+            `,
+            confirmButtonText: 'Lanjut',
+            showCancelButton: false,
+            didOpen: () => {
+                // Style untuk merapikan pilihan radio
+                const style = `
+                    <style>
+                        .survey-options {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+                            margin-top: 10px;
+                        }
+                        .survey-option {
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                        }
+                        .survey-option input {
+                            margin-right: 5px;
+                        }
+                    </style>
+                `;
+                document.head.insertAdjacentHTML('beforeend', style);
+            }
+        });
+
+        // Ambil nilai jawaban dari radio button yang dipilih
+        const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+
+        // Jika tidak ada jawaban yang dipilih, tampilkan pesan dan ulangi
+        if (!selectedAnswer) {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan!',
+                text: 'Silakan pilih jawaban untuk melanjutkan!',
+                confirmButtonText: 'Oke'
+            });
+
+            // Ulangi lagi pertanyaan yang belum terjawab
+            return startSurvey();
+        }
+
+        // Menambahkan nilai skor berdasarkan jawaban yang dipilih
+        totalScore += parseInt(selectedAnswer.value, 10);
+    }
+
+    // Hitung persentase komitmen
+    const commitmentPercentage = (totalScore / maxScore) * 100;
+
+    // Tampilkan hasil
+    if (commitmentPercentage >= 70) {
+        await Swal.fire({
+            icon: 'success',
+            title: 'Selamat!',
+            text: `Komitmenmu sebesar ${commitmentPercentage.toFixed(2)}%. Kamu bisa bergabung dengan Pasukan Aerox!`,
+            confirmButtonText: 'Lanjut'
+        });
+    } else {
+        await Swal.fire({
+            icon: 'error',
+            title: 'Maaf!',
+            text: `Komitmenmu hanya sebesar ${commitmentPercentage.toFixed(2)}%. Kamu perlu minimal 70% untuk bergabung.`,
+            confirmButtonText: 'Coba Lagi'
+        });
+
+        // Mulai ulang dari tampilan pesan siap bergabung
+        return mulai();
+    }
+
+    // Lanjutkan proses jika memenuhi kriteria
+    // Tambahkan proses lanjutan di sini jika ada
+}
+
+
+
+
+// Panggil survei setelah input umur selesai
+await startSurvey();
 
     document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
     text4 = "Dari: " + author + ", Untuk: " + nama + ".";
