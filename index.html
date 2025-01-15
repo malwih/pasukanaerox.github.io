@@ -681,7 +681,7 @@ async function startSurvey() {
     const commitmentPercentage = (totalScore / maxScore) * 100;
 
     // Tampilkan hasil
-    if (commitmentPercentage >= 80) {  // Update this condition to 80% instead of 70%
+    if (commitmentPercentage >= 85) {  // Update this condition to 80% instead of 70%
         await Swal.fire({
             icon: 'success',
             title: 'Selamat!',
@@ -776,7 +776,7 @@ async function colorBlindnessTest() {
     const colorBlindnessPercentage = (score / questions.length) * 100;
 
     // Tampilkan hasil
-    if (colorBlindnessPercentage >= 80) {
+    if (colorBlindnessPercentage >= 100) {
         await Swal.fire({
             icon: 'success',
             title: 'Tes Buta Warna Berhasil!',
