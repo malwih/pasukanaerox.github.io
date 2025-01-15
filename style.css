@@ -23,3 +23,10 @@ body{background-color:#101010;font-family: 'Quicksand', sans-serif;padding: 25px
     z-index: 9998; /* Harus lebih rendah dari SweetAlert */
     pointer-events: none; /* Tidak bisa diklik */
 }
+
+#ftKm {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* Memotong gambar dan menampilkan bagian tengahnya */
+    border-radius: 50%; /* Opsional: membuat gambar menjadi lingkaran */
+}
