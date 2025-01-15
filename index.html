@@ -674,38 +674,134 @@ async function startSurvey() {
         totalScore += parseInt(selectedAnswer.value, 10);
     }
 
+    // Pastikan skor total tidak melebihi skor maksimum
+    totalScore = Math.min(totalScore, maxScore);
+
     // Hitung persentase komitmen
     const commitmentPercentage = (totalScore / maxScore) * 100;
 
     // Tampilkan hasil
-    if (commitmentPercentage >= 70) {
+    if (commitmentPercentage >= 80) {  // Update this condition to 80% instead of 70%
         await Swal.fire({
             icon: 'success',
             title: 'Selamat!',
             text: `Komitmenmu sebesar ${commitmentPercentage.toFixed(2)}%. Kamu bisa bergabung dengan Pasukan Aerox!`,
             confirmButtonText: 'Lanjut'
         });
+
+        // Start color blindness test after successful commitment survey
+        await colorBlindnessTest();
     } else {
         await Swal.fire({
             icon: 'error',
             title: 'Maaf!',
-            text: `Komitmenmu hanya sebesar ${commitmentPercentage.toFixed(2)}%. Kamu perlu minimal 70% untuk bergabung.`,
+            text: `Komitmenmu hanya sebesar ${commitmentPercentage.toFixed(2)}%. Kamu perlu minimal 80% untuk bergabung.`,
             confirmButtonText: 'Coba Lagi'
         });
 
         // Mulai ulang dari tampilan pesan siap bergabung
         return mulai();
     }
-
-    // Lanjutkan proses jika memenuhi kriteria
-    // Tambahkan proses lanjutan di sini jika ada
 }
 
+// Color Blindness Test
+async function colorBlindnessTest() {
+    const questions = [
+        { image: 'merah.png', correctAnswer: 'merah' },
+        { image: 'hijau.jpg', correctAnswer: 'hijau' },
+        { image: 'biru.jpg', correctAnswer: 'biru' },
+        { image: 'pink.png', correctAnswer: 'pink' },
+        { image: 'kuning.jpg', correctAnswer: 'kuning' },
+        { image: 'hitam.png', correctAnswer: 'hitam' },
+    ];
+
+    let score = 0;
+
+    for (let i = 0; i < questions.length; i++) {
+        const { image, correctAnswer } = questions[i];
+
+        let userAnswer = null;
+        while (!userAnswer) {
+            const { value: answer } = await Swal.fire({
+                title: `Soal ${i + 1}: Apa warna yang kamu lihat?`,
+                imageUrl: image,  // Replace with actual image URL
+                imageWidth: 300,  // Set image width to 300px for consistency
+                imageHeight: 200, // Set image height to 200px
+                imageAlt: 'Warna Tes', // Alt text for the image
+                input: 'text',
+                inputPlaceholder: 'Tulis warna yang kamu lihat...',
+                inputAttributes: {
+                    'aria-label': 'Jawaban',
+                },
+                confirmButtonText: 'Kirim Jawaban',
+                showCancelButton: true,
+                cancelButtonText: 'Batal',
+                allowOutsideClick: false, // Prevent the modal from being dismissed by clicking outside
+                allowEscapeKey: false,   // Disable closing by Escape key
+                preConfirm: (inputValue) => {
+                    if (!inputValue) {
+                        Swal.showValidationMessage('Jawaban tidak boleh kosong!');
+                        return false;
+                    }
+                    return inputValue;
+                },
+                didOpen: () => {
+                    // Apply responsive image styling
+                    const imgElement = document.querySelector('.swal2-image');
+                    imgElement.style.maxWidth = '100%';  // Ensure image is responsive
+                    imgElement.style.height = 'auto';    // Maintain aspect ratio
+                    imgElement.style.objectFit = 'contain'; // Contain the image within its container
+                }
+            });
+
+            if (answer) {
+                // Check if the answer is correct
+                if (answer.toLowerCase() === correctAnswer.toLowerCase()) {
+                    score++;
+                }
+                userAnswer = answer; // Set userAnswer to allow moving to the next question
+            } else {
+                // If user clicked 'Cancel', exit the test early
+                return Swal.fire({
+                    icon: 'warning',
+                    title: 'Tes dibatalkan',
+                    text: 'Kamu telah membatalkan tes warna.',
+                    confirmButtonText: 'Tutup'
+                });
+            }
+        }
+    }
+
+    // Hitung persentase hasil tes buta warna
+    const colorBlindnessPercentage = (score / questions.length) * 100;
+
+    // Tampilkan hasil
+    if (colorBlindnessPercentage >= 80) {
+        await Swal.fire({
+            icon: 'success',
+            title: 'Tes Buta Warna Berhasil!',
+            text: `Hasil: ${colorBlindnessPercentage.toFixed(2)}%. Kamu tidak buta warna!`,
+            confirmButtonText: 'Lanjut'
+        });
+    } else {
+        await Swal.fire({
+            icon: 'warning',
+            title: 'Tes Buta Warna Gagal!',
+            text: `Hasil: ${colorBlindnessPercentage.toFixed(2)}%. Kamu perlu minimal 80% untuk melanjutkan.`,
+            confirmButtonText: 'Coba Lagi'
+        });
+
+        // Restart the color blindness test if failed
+        return colorBlindnessTest();
+    }
+}
 
 
 
 // Panggil survei setelah input umur selesai
 await startSurvey();
+
+
 
     document.getElementById("namamu").innerHTML = "Halo, " + nama + "!";
     text4 = "Dari: " + author + ", Untuk: " + nama + ".";
